@@ -3,11 +3,7 @@ class CLIENT
 	s = TCPSocket.open("localhost", 2623)
 	s.puts("HELO text\n")
 	while line = s.gets
-		if line == "END\n"
-			break
-		else
-			puts line
-		end
+		puts line
 	end
 	s.close()
 end
