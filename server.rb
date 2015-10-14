@@ -4,7 +4,7 @@ class SERVER
 	require "thread"
 	
 	address = "localhost"
-	port = 2626
+	port = ARGV[0]
 	server = TCPServer.open(address, port)
 	
 	connection_queue = Queue.new
