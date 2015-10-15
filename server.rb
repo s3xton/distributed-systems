@@ -27,10 +27,12 @@ class SERVER
 					client.puts("Invalid command: " + line)
 				end
 			end
+			client.close
 		end
 	end
 	# Main control loops pushes new connections to the queue
 	loop do
 		connection_queue.push(server.accept)
 	end
+	server.close
 end 
