@@ -6,7 +6,7 @@ class SERVER
 	address = "localhost"
 	port = ARGV[0]
 	server = TCPServer.open(address, port)
-	
+	student_id = "aa3e68899f9a879f8408b5af0bec24991f35aa22398b70458a8239e15bb29b93"
 	# Queue is thread-safe so if multiples threads access it at the same time it will
 	# maintain consistency
 	connection_queue = Queue.new
@@ -20,7 +20,7 @@ class SERVER
 				line = client.gets
 				case line
 				when /HELO .*/
-					client.puts("HELO text\nIP: " + address + "\nPort: #{port}\nStudentID: \n")
+					client.puts("HELO text\nIP: " + address + "\nPort: #{port}\nStudentID: " + student_id +"\n")
 				when /KILL_SERVICE/
 					exit
 				else
