@@ -1,10 +1,10 @@
 from socket import *
 import thread
 import os
-
+import sys 
 buf = 1024
 host = ""
-port = 443
+port = int(sys.argv[1])
 
 def handler(client,addr):
     while 1:
