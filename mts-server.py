@@ -11,7 +11,7 @@ def handler(client,addr):
         data = client.recv(buf)
         if not data: break
         if data[:4] == 'HELO':
-            client.send(str(data) +"IP:52.16.255.69\nPort: " + str(port) +"\nStudentID: 12311449\n")
+            client.send(str(data) +"IP:52.16.255.69\nPort: " + str(port) +"\nStudentID: aa3e68899f9a879f8408b5af0bec24991f35aa22398b70458a8239e15bb29b93\n")
         if data[:12] == "KILL_SERVICE":
             os._exit(0)
     
