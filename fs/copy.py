@@ -4,6 +4,9 @@ import os
 import sys 
 import collections
 import random
+import time 
+import os.path
+
 
 class Copy:
     
@@ -13,15 +16,22 @@ class Copy:
         self.primary = isPrimary
         self.other_replicas = {8003}
         self.port = int(port)
+        self.first = True
     
+    # If the file exists, read its contents, otherwise return an error
     def readFile(self, filename, client):
         words = filename.split("/")
         print words[2]
-        f = open(words[2], 'r')
-        filedata = f.read()
-        print filedata
-        client.send(filedata+"\n")
-          
+        if os.path.isfile(words[2]):
+            f = open(words[2], 'r')
+            filedata = f.read()
+            print "DATA: " + filedata 
+            client.send(filedata+"\n")
+        else:
+            client.send("ERROR: file doesn't exist\n")
+            print "ERROR: file doesn't exist"
+    
+    # Write to the the file, if it doesnt exist its created      
     def writeFile(self, data):
         lines = data.splitlines()
         print lines
@@ -29,10 +39,11 @@ class Copy:
         filedata = lines[1][6:]
         file = open(filename, 'w')
         file.write(filedata)
-        print "written"
         if self.primary:
+            print "REP: "+lines[0].split(" ")[1]
             self.updateReplicas(lines[0].split(" ")[1], filedata)
-        
+    
+    # After a write has happend, sends a write command to all other replicas    
     def updateReplicas(self, filename, filedata):
         msg = 'WRITE: ' + filename + '\nDATA: ' + filedata
         print msg
@@ -41,7 +52,8 @@ class Copy:
             print port
             s.connect((self.host, port))
             s.send(msg)
-        
+    
+    # Handler for incoming messages    
     def handler(self, client,addr):
         data = client.recv(self.buf)
         if data[:4] == 'HELO':

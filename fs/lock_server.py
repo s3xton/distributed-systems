@@ -4,12 +4,17 @@ import os
 import sys 
 import collections
 import random
+import time
 buf = 1024
 host = "localhost"
 port = 8001#int(sys.argv[1])
 
 locks = collections.defaultdict(dict) #[address:[filename:locked]]
 
+# Acquires a lock for the specified file at the specified address
+# If the file doesn't exist inthe dict, create it and mark it as locked.
+# If it does and its free, mark it as locked.
+# If it does and its locked, wait until its free then lock it and notfiy client
 def acquireLock(data, client):
     words = data.split(" ")
     address = words[1]
@@ -22,7 +27,8 @@ def acquireLock(data, client):
     locks[address][filename] = True
     print "lock"
     client.send("LOCK\n")
-    
+
+# Marks a file as free
 def releaseLock(data):
     words = data.split(" ")
     address = words[1].strip()
