@@ -17,6 +17,8 @@ class Copy:
         self.other_replicas = {8003}
         self.port = int(port)
         self.first = True
+        self.PORT_ds = 8000
+		self.HOST_ds = "localhost"
     
     # If the file exists, read its contents, otherwise return an error
     def readFile(self, filename, client):
@@ -52,6 +54,14 @@ class Copy:
             print port
             s.connect((self.host, port))
             s.send(msg)
+    
+    # If recovering from a crash, send this to the directory server        
+    def alertDirectoryServer(self, address):
+		s = socket(AF_INET, SOCK_STREAM)
+		s.connect((self.HOST_ds, self.PORT_ds))
+		message = "ALIVE: " + address
+		s.send(message)
+        s.close()
     
     # Handler for incoming messages    
     def handler(self, client,addr):
