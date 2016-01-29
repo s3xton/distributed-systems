@@ -57,10 +57,17 @@ class Copy:
     
     # If recovering from a crash, send this to the directory server        
     def alertDirectoryServer(self, address):
+<<<<<<< HEAD
 		s = socket(AF_INET, SOCK_STREAM)
 		s.connect((self.HOST_ds, self.PORT_ds))
 		message = "ALIVE: " + address
 		s.send(message)
+=======
+	s = socket(AF_INET, SOCK_STREAM)
+	s.connect((self.HOST_ds, self.PORT_ds))
+	message = "ALIVE: " + address
+	s.send(message)
+>>>>>>> 5b064e9304a218975ecbf84f092870111b8396ad
         s.close()
     
     # Handler for incoming messages    
