@@ -105,6 +105,7 @@ class ClientProxy:
 			s.connect((self.HOST_ds, self.PORT_ds))
 			message = "CRASH: " + address
 			s.send(self.formMessage(message))
+			s.close()
 		else:
 			print "ERROR: you must log in first"
 		
@@ -144,7 +145,7 @@ class ClientProxy:
 		else:
 			print "ERROR: you must log in first"
 	
-	def login(self, server_id, username, password):
+	def login(self, username, password):
 		encrypted = crypto.encrypt(password, username)
 		message = "LOGIN: " + username + "\n" + encrypted
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -161,7 +162,7 @@ class ClientProxy:
 #### TESTS ####
 cp = ClientProxy()
 #cp.readFile("/user/tb.txt")
-cp.login("ds", "conor", "password")
+cp.login("conor", "password")
 cp.openFile("/user/tb.txt")
 cp.writeFile("/user/tb.txt", "Helllll")
 cp.closeFile("/user/tb.txt")
