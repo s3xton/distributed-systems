@@ -38,6 +38,10 @@ def getAddress(direct, client, write):
 def removeServer(address):
     status[address] = False
     print "Removed: " + str(address)
+    
+def reviveServer(address):
+    status[address] = True
+    print "Revived: " + str(address)
 
 # Handles incoming messages
 def handler(client,addr):
@@ -57,6 +61,8 @@ def handler(client,addr):
         getAddress(msg[6:], client, True)
     if msg[:5] == 'CRASH':
         removeServer(int(msg[7:]))
+    if msg[:5] == 'ALIVE':
+        reviveServer(int(msg[7:]))
    
     print "close"
     client.close()
